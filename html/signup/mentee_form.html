@@ -1,0 +1,35 @@
+<script type="text/javascript">
+  function toggle_ueu_mentee() {
+    var uni = document.getElementById('mentee_university');
+    var mueu = document.getElementById('mentee_u_e_university');
+    if (uni.value === 'not_listed') {
+      mueu.style.display = '';
+    }
+    else {
+      mueu.style.display = 'none';
+    }
+  }
+</script>
+<form method="post" action="mentee_signup_submit">
+  First Name: <input type="text" name="first_name"><br>
+  Last Name: <input type="text" name="last_name"><br>
+  University: 
+  <select id = "mentee_university" name = "university" onchange="toggle_ueu_mentee();">
+    <option value = "" selected>Please select university</option>
+    <option value = "not_listed">Not listed</option>
+    UNIVERSITY_OPTIONS
+  </select><br>
+  <div id="mentee_u_e_university">
+    Please enter your university:<br>
+    <input type="text" name="user_entered_university"><br>
+  </div>
+  <script type="text/javascript">
+    document.getElementById('mentee_u_e_university').style.display = 'none';
+  </script>
+  Please check the groups you identify as a member of:<br>
+  <input type = "checkbox" name = "woman" value = "on"> Woman<br>
+  <input type = "checkbox" name = "poc" value = "on"> PoC<br>
+  <input type = "checkbox" name = "health" value = "on"> Health<br>
+  Subfield: <input type="text" name="subfield"><br>
+  <button type="submit">Sign up</button>
+</form>

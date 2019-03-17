@@ -1,0 +1,46 @@
+<html>  
+  <head>  
+    <script type="text/javascript">  
+      function toggle_role(){  
+        var mentor_div = document.getElementById('mentor_div');
+        var mentee_div = document.getElementById('mentee_div');
+        var role = document.getElementById('role');
+        if (role.value === 'none') {
+          mentor_div.style.display = 'none';
+          mentee_div.style.display = 'none';
+        }
+        if (role.value === 'mentor') {
+          mentor_div.style.display = '';
+          mentee_div.style.display = 'none';
+        }
+        if (role.value === 'mentee') {
+          mentor_div.style.display = 'none';
+          mentee_div.style.display = '';
+        }
+      }
+    </script>  
+  </head>  
+  <body>  
+    <form>
+      Please select your role:
+      <select id="role" onchange="toggle_role();">
+        <option value="none" selected></option>
+        <option value="mentor">Mentor</option>
+        <option value="mentee">Mentee</option>
+      </select>
+      <div id="mentor_div">
+        MENTOR_SIGNUP_FORM
+      </div>
+      <script type="text/javascript">
+        document.getElementById('mentor_div').style.display = 'none';
+      </script>
+      <div id="mentee_div">
+        MENTEE_SIGNUP_FORM
+      </div>
+      <script type="text/javascript">
+        document.getElementById('mentee_div').style.display = 'none';
+      </script>  
+    </form>
+  </body>  
+</html>  
+
