@@ -54,6 +54,7 @@ class DB:
 	def __init__(self, path):
 		self.mentees = {}
 		self.mentors = {}
+		self.matching = []
 		self.filepath = path
 
 	def add_mentee(self, f, l, uni, gps, subf):
@@ -98,7 +99,7 @@ class DB:
 		data = []
 		data.append(mentee_data)
 		data.append(mentor_data)
-		data.append(self.filepath)
+		data.append(self.matching)
 		f.write(json.dumps(data))
 		f.close()
 
@@ -109,13 +110,16 @@ class DB:
 		data = json.loads(raw)
 		mentee_data = data[0]
 		mentor_data = data[1]
-		self.filepath = data[2]
 		for entry in mentee_data:
 			new_mentee = Mentee(entry)
 			self.mentees[new_mentee.db_id] = new_mentee
 		for entry in mentor_data:
 			new_mentor = Mentor(entry)
 			self.mentors[new_mentor.db_id] = new_mentor
+		self.matching = data[2]
+
+	def match(self):
+		self.matching = sort_matching(self, get_matching(self))
 
 
 
@@ -237,8 +241,7 @@ def get_matching(db):
 	lp_inputs = get_LP_inputs(db)
 	lp_output = optimize.linprog(lp_inputs[0], lp_inputs[1], lp_inputs[2], lp_inputs[3], lp_inputs[4], lp_inputs[5])
 	if not lp_output.success:
-		print "derp"
-		return
+		return []
 	match_vector = lp_output.x
 	matching = []
 	index = 0
@@ -253,4 +256,37 @@ def get_matching(db):
 	return matching
 
 
-
+def sort_matching(db, matching):
+	if len(matching) <= 1:
+		return matching
+	pivot = matching[0]
+	pivot_fn = db.mentees[pivot[1]].first_name
+	pivot_ln = db.mentees[pivot[1]].last_name
+	left = []
+	middle = []
+	right = []
+	middle.append(pivot)
+	for i in range(1, len(matching)):
+		fn = db.mentees[matching[i][1]].first_name
+		ln = db.mentees[matching[i][1]].last_name
+		if ln < pivot_ln:
+			left.append(matching[i])
+		if ln > pivot_ln:
+			right.append(matching[i])
+		if ln == pivot_ln:
+			if fn < pivot_fn:
+				left.append(matching[i])
+			if fn > pivot_fn:
+				right.append(matching[i])
+			if fn == pivot_fn:
+				middle.append(matching[i])
+	left = sort_matching(db, left)
+	right = sort_matching(db, right)
+	result = []
+	for x in left:
+		result.append(x)
+	for x in middle:
+		result.append(x)
+	for x in right:
+		result.append(x)
+	return result

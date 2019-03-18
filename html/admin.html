@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script type="text/javascript">
+      function make_db_visible() {
+        var db = document.getElementById('db');
+        var match = document.getElementById('match');
+        db.style.display = '';
+        match.style.display = 'none';
+      }
+      function make_match_visible() {
+        var db = document.getElementById('db');
+        var match = document.getElementById('match');
+        db.style.display = 'none';
+        match.style.display = '';
+      }
+    </script>
+  </head>
+  <body>
+    <button type="button" onclick="make_db_visible();">Edit database</button>
+    <button type="button" onclick="make_match_visible();">Matching program</button>
+    <div id="db">
+      DBEDITOR
+    </div>
+    <script type="text/javascript">
+      document.getElementById('db').style.display = 'none';
+    </script>
+    <div id="match">
+      MATCHPROGRAM
+    </div>
+    <script type="text/javascript">
+      document.getElementById('match').style.display = 'none';
+    </script>
+  </body>
+</html>
