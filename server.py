@@ -5,6 +5,9 @@ import cherrypy
 
 import server_helper
 
+import script
+from script import DB, get_matching
+
 class SignUpServer(object):
 	@cherrypy.expose
 	def index(self):
@@ -15,14 +18,16 @@ class SignUpServer(object):
 		return server_helper.signup_helper()
 
 	@cherrypy.expose
-	def mentor_signup_submit(self, first_name="", last_name="", university="", subfield="", woman = "", poc = "", health = ""):
-		return signup_submit(self, 'mentor', first_name, last_name, university, subfield, woman, poc, health)
+	def mentor_signup_submit(self, first_name="", last_name="", university="", user_entered_university="", subfield="", woman = "", poc = "", health = ""):
+		return self.signup_submit('mentor', first_name, last_name, university, user_entered_university, subfield, woman, poc, health)
 
 	@cherrypy.expose
-	def mentee_signup_submit(self, first_name="", last_name="", university="", subfield="", woman = "", poc = "", health = ""):
-		return signup_submit(self, 'mentee', first_name, last_name, university, subfield, woman, poc, health)
+	def mentee_signup_submit(self, first_name="", last_name="", university="", user_entered_university="", subfield="", woman = "", poc = "", health = ""):
+		return self.signup_submit('mentee', first_name, last_name, university, user_entered_university, subfield, woman, poc, health)
 
-	def signup_submit(self, role, first_name, last_name, university, subfield, woman, poc, health):
+	def signup_submit(self, role, first_name, last_name, university, user_entered_university, subfield, woman, poc, health):
+		if university == 'not_listed':
+			university = user_entered_university
 		underrepresented_groups = []
 		if woman == "on":
 			underrepresented_groups.append("woman")
