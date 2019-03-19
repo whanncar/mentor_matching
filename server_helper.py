@@ -1,6 +1,6 @@
 
-import script
-from script import DB, get_matching
+import classes
+from classes import DB
 
 def get_static_page(name):
 	f = open('html/' + name + '.html')
